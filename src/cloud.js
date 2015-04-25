@@ -120,11 +120,6 @@ module.exports = function(cam, col) {
 
       var speed = 10 * expStep(distTravNorm, 5, -0.5);
 
-      if (thisId === 0) {
-        console.log(distTravelled, maxDistance, distTravNorm, speed);
-
-      }
-
       cloud.position.z += 10 - speed;
 
       if (cloud.position.z > camera.position.z) {
