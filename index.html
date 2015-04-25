@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>cloud-front</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container"></div>
+<script type="x-shader/x-vertex" id="vertexshader">
+
+  attribute float size;
+  attribute vec3 ca;
+
+  varying vec3 vColor;
+
+  void main() {
+
+    vColor = ca;
+
+    vec4 mvPosition = modelViewMatrix * vec4( position, 2.0 );
+
+    //gl_PointSize = size;
+    gl_PointSize = size * ( 300.0 / length( mvPosition.xyz ) );
+
+    gl_Position = projectionMatrix * mvPosition;
+
+  }
+
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+
+  uniform vec3 color;
+  uniform sampler2D texture;
+
+  varying vec3 vColor;
+
+  void main() {
+
+    vec4 color = vec4( color * vColor, 1.0 ) * texture2D( texture, gl_PointCoord );
+    if ( color.w < 0.5 ) discard;
+    gl_FragColor = color;
+
+  }
+
+</script>
+
+
+<script id="live-reload" src="http://localhost:35729/livereload.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
